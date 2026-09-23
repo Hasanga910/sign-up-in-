@@ -24,6 +24,7 @@ export default function VerifyOtp() {
           ? await supabase.auth.signInWithOtp({ email: identifier })
           : await supabase.auth.signInWithOtp({ phone: identifier });
       if (error) {
+        console.error(error);
         setErrorMessage('Could not send code');
         return;
       }
@@ -40,6 +41,7 @@ export default function VerifyOtp() {
         ? await supabase.auth.verifyOtp({ email: identifier, token, type: 'email' })
         : await supabase.auth.verifyOtp({ phone: identifier, token, type: 'sms' });
     if (error) {
+      console.error(error);
       setErrorMessage('Invalid or expired code');
       return;
     }

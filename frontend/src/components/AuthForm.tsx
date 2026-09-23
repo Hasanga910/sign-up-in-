@@ -4,9 +4,10 @@ import type { FormEvent } from 'react';
 interface AuthFormProps {
   submitLabel: string;
   onSubmit: (email: string, password: string) => Promise<void>;
+  passwordAutoComplete?: 'current-password' | 'new-password';
 }
 
-export function AuthForm({ submitLabel, onSubmit }: AuthFormProps) {
+export function AuthForm({ submitLabel, onSubmit, passwordAutoComplete = 'current-password' }: AuthFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +42,7 @@ export function AuthForm({ submitLabel, onSubmit }: AuthFormProps) {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
-          autoComplete="current-password"
+          autoComplete={passwordAutoComplete}
         />
       </label>
       <button type="submit" disabled={submitting}>

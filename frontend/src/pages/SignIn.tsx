@@ -12,6 +12,7 @@ export default function SignIn() {
     setErrorMessage('');
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
+      console.error(error);
       setErrorMessage('Invalid email or password'); // never say which one is wrong
       return;
     }
