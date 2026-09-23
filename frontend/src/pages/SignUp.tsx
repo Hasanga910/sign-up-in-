@@ -4,6 +4,11 @@ import { supabase } from '../lib/supabaseClient';
 import { AuthForm } from '../components/AuthForm';
 import { OAuthButtons } from '../components/OAuthButtons';
 import { OtpInput } from '../components/OtpInput';
+import type { AuthError } from '@supabase/supabase-js';
+
+function describeAuthError(error: AuthError): string {
+  return `${error.status ?? '?'} ${error.name}: ${error.message}`;
+}
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -20,7 +25,7 @@ export default function SignUp() {
     if (error) {
       console.error(error);
       setErrorMessage('Could not create account'); // generic message, don't leak specifics
-      if (import.meta.env.DEV) setDebugMessage(error.message);
+      if (import.meta.env.DEV) setDebugMessage(describeAuthError(error));
       return;
     }
     setEmail(email);
@@ -34,7 +39,7 @@ export default function SignUp() {
     if (error) {
       console.error(error);
       setErrorMessage('Invalid or expired code');
-      if (import.meta.env.DEV) setDebugMessage(error.message);
+      if (import.meta.env.DEV) setDebugMessage(describeAuthError(error));
       return;
     }
     navigate('/dashboard');
@@ -49,7 +54,7 @@ export default function SignUp() {
       if (error) {
         console.error(error);
         setErrorMessage('Could not resend code');
-        if (import.meta.env.DEV) setDebugMessage(error.message);
+        if (import.meta.env.DEV) setDebugMessage(describeAuthError(error));
       }
     } finally {
       setResending(false);
